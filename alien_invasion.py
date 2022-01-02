@@ -11,6 +11,7 @@ from button import Button
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
+import sounds
 
 
 class AlienInvasion:
@@ -23,7 +24,7 @@ class AlienInvasion:
 
         self.screen = pygame.display.set_mode(
             (self.settings.screen_width, self.settings.screen_height))
-        self.clock = pygame.time.Clock()  # fps attempt
+        self.clock = pygame.time.Clock()
         pygame.display.set_caption("Alien Invasion")
 
         # Create an instance to store game statistics,
@@ -42,6 +43,7 @@ class AlienInvasion:
 
     def run_game(self):
         """Start the main loop for the game."""
+        # Play BGM.
         while True:
             self._check_events()
 
@@ -51,7 +53,8 @@ class AlienInvasion:
                 self._update_aliens()
 
             self._update_screen()
-            self.clock.tick(self.settings.frame_rate)  # fps attempt
+            # Frame rate.
+            self.clock.tick(self.settings.frame_rate)
 
     def _check_events(self):
         """Respond to keypresses and mouse events."""
@@ -70,6 +73,11 @@ class AlienInvasion:
         """Start a new game when the player clicks Play."""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
+            # Stop start BGM.
+            sounds.start_music.stop()
+            # Play button SFX.
+            sounds.button_sound.play()
+
             # Reset game settings.
             self.settings.initialize_dynamic_settings()
 
@@ -90,6 +98,9 @@ class AlienInvasion:
 
             # Hide the mouse cursor.
             pygame.mouse.set_visible(False)
+
+            # Start gameplay BGM.
+            sounds.gameplay_music.play(-1).set_volume(1.0)
 
     def _check_keydown_events(self, event):
         """Respond to keypresses."""
@@ -120,6 +131,9 @@ class AlienInvasion:
 
     def _ship_hit(self):
         """Respond to the ship being hit by an alien."""
+        # Play ship hit sound.
+        sounds.ship_hit_sound.play()
+
         if self.stats.ships_left > 0:
             # Decrement ships_left, and update scoreboard.
             self.stats.ships_left -= 1
@@ -144,6 +158,7 @@ class AlienInvasion:
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
+            sounds.bullet_sound.play().set_volume(0.5)
 
     def _update_bullets(self):
         """Update position of bullets and get rid of old bullets."""
@@ -168,6 +183,7 @@ class AlienInvasion:
                 self.stats.score += self.settings.alien_points * len(aliens)
             self.sb.prep_score()
             self.sb.check_high_score()
+            sounds.alien_sound.play().set_volume(0.5)
 
         if not self.aliens:
             # Destroy existing bullets and create a new fleet.
@@ -244,8 +260,9 @@ class AlienInvasion:
         # Draw the score information.
         self.sb.show_score()
 
-        # Draw the play button if the game is inactive.
+        # Draw the play button and play start music if the game is inactive.
         if not self.stats.game_active:
+            sounds.start_music.play(-1)
             self.play_button.draw_button()
 
         pygame.display.flip()
