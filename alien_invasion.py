@@ -39,11 +39,10 @@ class AlienInvasion:
         self._create_fleet()
 
         # Make the Play button.
-        self.play_button = Button(self, "Play")
+        self.play_button = Button(self, "PLAY")
 
     def run_game(self):
         """Start the main loop for the game."""
-        # Play BGM.
         while True:
             self._check_events()
 
@@ -73,8 +72,9 @@ class AlienInvasion:
         """Start a new game when the player clicks Play."""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
-            # Stop start BGM.
+            # Stop BGM.
             sounds.start_music.stop()
+            sounds.gameplay_music.stop()
             # Play button SFX.
             sounds.button_sound.play()
 
@@ -99,8 +99,8 @@ class AlienInvasion:
             # Hide the mouse cursor.
             pygame.mouse.set_visible(False)
 
-            # Start gameplay BGM.
-            sounds.gameplay_music.play(-1).set_volume(1.0)
+        # Start BGM.
+        sounds.gameplay_music.play(-1)
 
     def _check_keydown_events(self, event):
         """Respond to keypresses."""
@@ -150,6 +150,7 @@ class AlienInvasion:
             # Pause.
             sleep(0.5)
         else:
+            sounds.gameplay_music.stop()
             self.stats.game_active = False
             pygame.mouse.set_visible(True)
 
@@ -158,7 +159,7 @@ class AlienInvasion:
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
-            sounds.bullet_sound.play().set_volume(0.5)
+            sounds.bullet_sound.play()
 
     def _update_bullets(self):
         """Update position of bullets and get rid of old bullets."""
@@ -183,7 +184,7 @@ class AlienInvasion:
                 self.stats.score += self.settings.alien_points * len(aliens)
             self.sb.prep_score()
             self.sb.check_high_score()
-            sounds.alien_sound.play().set_volume(0.5)
+            sounds.alien_sound.play()
 
         if not self.aliens:
             # Destroy existing bullets and create a new fleet.
