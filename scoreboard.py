@@ -17,7 +17,7 @@ class Scoreboard:
 
         # Font settings for scoring information.
         self.text_color = ('black')
-        self.font = pygame.font.Font('font/monogram-extended.ttf', 32)
+        self.font = pygame.font.Font('font/mago3.ttf', 32)
 
         # Prepare the initial score images.
         self.prep_score()
@@ -45,8 +45,8 @@ class Scoreboard:
 
         high_score = round(self.stats.high_score, -1)
         high_score_str = "{:,}".format(high_score)
-        self.high_score_image = self.font.render(
-            high_score_str, True, self.text_color, self.settings.bg_color)
+        self.high_score_image = self.font.render(high_score_str, True,
+                                                 self.text_color, self.settings.bg_color)
 
         # Center text: "HIGH SCORE" at the top of the screen.
         self.hs_rect = self.hs_image.get_rect()
@@ -61,7 +61,7 @@ class Scoreboard:
     def check_high_score(self):
         """Check to see if there's a new high score."""
         if self.stats.score > self.stats.high_score:
-            self.stats.high_score = self.stats.high_score
+            self.stats.high_score = self.stats.score
             self.prep_high_score()
 
     def prep_level(self):
