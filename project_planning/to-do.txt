@@ -1,0 +1,13 @@
+Alien Invasion To-Do List
+
+==  Game Features ==
+-Add key to start game
+-Keep high score after closing game
+
+== Misc ==
+-Pixel art
+-Logo, new name, illustration
+-Desktop apps
+    -dmg (https://py2app.readthedocs.io/en/latest/install.html)
+    -exe (https://pypi.org/project/auto-py-to-exe/)
+-Web version? (https://trinket.io/features/pygame)
