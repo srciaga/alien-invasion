@@ -72,32 +72,35 @@ class AlienInvasion:
         """Start a new game when the player clicks Play."""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
-            # Stop BGM.
-            sounds.start_music.stop()
-            sounds.gameplay_music.stop()
+            self._start_game()
             # Play button SFX.
             sounds.button_sound.play()
 
-            # Reset game settings.
-            self.settings.initialize_dynamic_settings()
+    def _start_game(self):
+        """Start a new game."""
+        # Stop BGM.
+        sounds.start_music.stop()
+        sounds.gameplay_music.stop()
+        # Reset game settings.
+        self.settings.initialize_dynamic_settings()
 
-            # Reset game statistics.
-            self.stats.reset_stats()
-            self.stats.game_active = True
-            self.sb.prep_score()
-            self.sb.prep_level()
-            self.sb.prep_ships()
+        # Reset game statistics.
+        self.stats.reset_stats()
+        self.stats.game_active = True
+        self.sb.prep_score()
+        self.sb.prep_level()
+        self.sb.prep_ships()
 
-            # Get rid of any remaining aliens and bullets.
-            self.aliens.empty()
-            self.bullets.empty()
+        # Get rid of any remaining aliens and bullets.
+        self.aliens.empty()
+        self.bullets.empty()
 
-            # Create a new fleet and center the ship.
-            self._create_fleet()
-            self.ship.center_ship()
+        # Create a new fleet and center the ship.
+        self._create_fleet()
+        self.ship.center_ship()
 
-            # Hide the mouse cursor.
-            pygame.mouse.set_visible(False)
+        # Hide the mouse cursor.
+        pygame.mouse.set_visible(False)
 
         # Start BGM.
         sounds.gameplay_music.play(-1)
@@ -112,6 +115,10 @@ class AlienInvasion:
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
+        elif event.key == pygame.K_p and not self.stats.game_active:
+            self._start_game()
+            # Play button SFX.
+            sounds.button_sound.play()
 
     def _check_keyup_events(self, event):
         """Respond to key releases."""
