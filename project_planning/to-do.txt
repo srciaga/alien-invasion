@@ -1,7 +1,7 @@
 Alien Invasion To-Do List
 
 ==  Game Features ==
--Keep high score after closing game
+-TBD
 
 == Misc ==
 -Pixel art
