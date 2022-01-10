@@ -7,7 +7,8 @@ class Settings:
         self.screen_width = 720
         self.screen_height = 720
         self.frame_rate = 100
-        self.bg_color = (230, 230, 230)
+        self.bg_color = (42, 32, 60)
+        self.background = 'images/bg.png'
 
         # Ship settings
         self.ship_limit = 3
@@ -15,7 +16,7 @@ class Settings:
         # Bullet settings
         self.bullet_width = 3
         self.bullet_height = 15
-        self.bullet_color = ('black')
+        self.bullet_color = (203, 48, 106)
         self.bullets_allowed = 3
 
         # Alien settings

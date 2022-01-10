@@ -16,7 +16,7 @@ class Scoreboard:
         self.stats = ai_game.stats
 
         # Font settings for scoring information.
-        self.text_color = ('black')
+        self.text_color = (223, 240, 211)
         self.font = pygame.font.Font('font/mago3.ttf', 32)
 
         # Prepare the initial score images.
@@ -30,7 +30,7 @@ class Scoreboard:
         rounded_score = round(self.stats.score, -1)
         score_str = "{:,}".format(rounded_score)
         self.score_image = self.font.render(score_str, True,
-                                            self.text_color, self.settings.bg_color)
+                                            self.text_color)
 
         # Display the score at the top right of the screen.
         self.score_rect = self.score_image.get_rect()
@@ -41,12 +41,12 @@ class Scoreboard:
         """Turn the high score into a rendered image."""
         hs_string = str("HIGH SCORE")
         self.hs_image = self.font.render(
-            hs_string, True, self.text_color, self.settings.bg_color)
+            hs_string, True, self.text_color)
 
         high_score = round(self.stats.high_score, -1)
         high_score_str = "{:,}".format(high_score)
         self.high_score_image = self.font.render(high_score_str, True,
-                                                 self.text_color, self.settings.bg_color)
+                                                 self.text_color)
 
         # Center text: "HIGH SCORE" at the top of the screen.
         self.hs_rect = self.hs_image.get_rect()
@@ -68,7 +68,7 @@ class Scoreboard:
         """Turn the level into a rendered image."""
         level_str = str(f"LEVEL {self.stats.level}")
         self.level_image = self.font.render(
-            level_str, True, self.text_color, self.settings.bg_color)
+            level_str, True, self.text_color)
 
         # Position the level below the score.
         self.level_rect = self.level_image.get_rect()
