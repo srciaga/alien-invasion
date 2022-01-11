@@ -18,7 +18,7 @@ class GameStats:
     def get_saved_high_score(self):
         """Gets high score from file, if it exists."""
         try:
-            with open('data/high_score.json') as f:
+            with open('data/save/high_score.json') as f:
                 return json.load(f)
         except FileNotFoundError:
             return 0

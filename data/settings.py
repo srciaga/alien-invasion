@@ -8,7 +8,7 @@ class Settings:
         self.screen_height = 720
         self.frame_rate = 100
         self.bg_color = (42, 32, 60)
-        self.background = 'images/bg.png'
+        self.background = 'data/images/bg.png'
 
         # Ship settings
         self.ship_limit = 3

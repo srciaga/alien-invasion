@@ -1,18 +1,19 @@
-import sys
-from time import sleep
-import json
-
-import pygame
+from pygame.mixer import Sound
+from data.sounds import Sounds
+from data.alien import Alien
+from data.bullet import Bullet
+from data.ship import Ship
+from data.button import Button
+from data.scoreboard import Scoreboard
+from data.game_stats import GameStats
+from data.settings import Settings
 from pygame import mouse
-
-from settings import Settings
-from game_stats import GameStats
-from scoreboard import Scoreboard
-from button import Button
-from ship import Ship
-from bullet import Bullet
-from alien import Alien
-import sounds
+import pygame
+import json
+from time import sleep
+import sys
+# Redirect path
+sys.path.append('/alieninvasion/data')
 
 
 class AlienInvasion:
@@ -22,6 +23,7 @@ class AlienInvasion:
         """Initialize the game, and create game resources."""
         pygame.init()
         self.settings = Settings()
+        self.sounds = Sounds()
 
         self.screen = pygame.display.set_mode(
             (self.settings.screen_width, self.settings.screen_height))
@@ -75,13 +77,13 @@ class AlienInvasion:
         if button_clicked and not self.stats.game_active:
             self._start_game()
             # Play button SFX.
-            sounds.button_sound.play()
+            self.sounds.button_sound
 
     def _start_game(self):
         """Start a new game."""
         # Stop BGM.
-        sounds.start_music.stop()
-        sounds.gameplay_music.stop()
+        self.sounds.start_music.stop()
+        self.sounds.gameplay_music.stop()
         # Reset game settings.
         self.settings.initialize_dynamic_settings()
 
@@ -104,7 +106,7 @@ class AlienInvasion:
         pygame.mouse.set_visible(False)
 
         # Start BGM.
-        sounds.gameplay_music.play(-1)
+        self.sounds.gameplay_music.play(-1)
         self.music_paused = False
 
     def _check_keydown_events(self, event):
@@ -120,14 +122,14 @@ class AlienInvasion:
         elif event.key == pygame.K_p and not self.stats.game_active:
             self._start_game()
             # Play button SFX.
-            sounds.button_sound.play()
+            self.sounds.button_sound.play()
         elif event.key == pygame.K_m:
             # Mute and unmute music.
             self.music_paused = not self.music_paused
             if self.music_paused:
-                sounds.gameplay_music.stop()
+                self.sounds.gameplay_music.stop()
             else:
-                sounds.gameplay_music.play(-1)
+                self.sounds.gameplay_music.play(-1)
 
     def _check_keyup_events(self, event):
         """Respond to key releases."""
@@ -148,7 +150,7 @@ class AlienInvasion:
     def _ship_hit(self):
         """Respond to the ship being hit by an alien."""
         # Play ship hit sound.
-        sounds.ship_hit_sound.play()
+        self.sounds.ship_hit_sound.play()
 
         if self.stats.ships_left > 0:
             # Decrement ships_left, and update scoreboard.
@@ -166,7 +168,7 @@ class AlienInvasion:
             # Pause.
             sleep(0.5)
         else:
-            sounds.gameplay_music.stop()
+            self.sounds.gameplay_music.stop()
             self.stats.game_active = False
             pygame.mouse.set_visible(True)
 
@@ -175,7 +177,7 @@ class AlienInvasion:
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
-            sounds.bullet_sound.play()
+            self.sounds.bullet_sound.play()
 
     def _update_bullets(self):
         """Update position of bullets and get rid of old bullets."""
@@ -200,7 +202,7 @@ class AlienInvasion:
                 self.stats.score += self.settings.alien_points * len(aliens)
             self.sb.prep_score()
             self.sb.check_high_score()
-            sounds.alien_sound.play()
+            self.sounds.alien_sound.play()
 
         if not self.aliens:
             # Destroy existing bullets and create a new fleet.
@@ -283,7 +285,7 @@ class AlienInvasion:
 
         # Draw the play button and play start music if the game is inactive.
         if not self.stats.game_active:
-            sounds.start_music.play(-1)
+            self.sounds.start_music.play(-1)
             self.play_button.draw_button()
 
         pygame.display.flip()
@@ -292,7 +294,7 @@ class AlienInvasion:
         """Save high score and exit."""
         saved_high_score = self.stats.get_saved_high_score()
         if self.stats.high_score > saved_high_score:
-            with open('data/high_score.json', 'w') as f:
+            with open('data/save/high_score.json', 'w') as f:
                 json.dump(self.stats.high_score, f)
 
         sys.exit()
