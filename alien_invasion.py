@@ -105,6 +105,7 @@ class AlienInvasion:
 
         # Start BGM.
         sounds.gameplay_music.play(-1)
+        self.music_paused = False
 
     def _check_keydown_events(self, event):
         """Respond to keypresses."""
@@ -120,6 +121,13 @@ class AlienInvasion:
             self._start_game()
             # Play button SFX.
             sounds.button_sound.play()
+        elif event.key == pygame.K_m:
+            # Mute and unmute music.
+            self.music_paused = not self.music_paused
+            if self.music_paused:
+                sounds.gameplay_music.stop()
+            else:
+                sounds.gameplay_music.play(-1)
 
     def _check_keyup_events(self, event):
         """Respond to key releases."""
