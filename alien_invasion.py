@@ -44,6 +44,10 @@ class AlienInvasion:
         # Make the Play button.
         self.play_button = Button(self, "PLAY")
 
+        # Set program icon.
+        programIcon = pygame.image.load('data/images/ai_icon.png')
+        pygame.display.set_icon(programIcon)
+
     def run_game(self):
         """Start the main loop for the game."""
         while True:
